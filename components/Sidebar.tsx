@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Footer from "./Footer";
+import PlaidLink from "./PlaidLink";
 
 const Sidebar = ({ user }: SiderbarProps) => {
   const pathname = usePathname();
@@ -18,7 +19,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
             src="/icons/logo.svg"
             width={34}
             height={34}
-            alt="Bank logo"
+            alt="Horizon logo"
             className="size-[24px] max-xl:size-14"
           />
           <h1 className="sidebar-logo">Bank</h1>
@@ -50,7 +51,10 @@ const Sidebar = ({ user }: SiderbarProps) => {
             </Link>
           );
         })}
+
+        <PlaidLink user={user} />
       </nav>
+
       <Footer user={user} />
     </section>
   );

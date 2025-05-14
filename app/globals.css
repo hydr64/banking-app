@@ -53,7 +53,7 @@
   }
 
   .text14_padding10 {
-    @apply text-14 px-4 py-2.5 font-semibold;
+    @apply text-[14px] px-4 py-2.5 font-semibold;
   }
 
   .flex-center {
@@ -61,7 +61,7 @@
   }
 
   .header-2 {
-    @apply text-18 font-semibold text-gray-900;
+    @apply text-[18px] font-semibold text-gray-900;
   }
 
   .text-10 {
@@ -138,7 +138,7 @@
   }
 
   .view-all-btn {
-    @apply text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700;
+    @apply text-[14px] rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700;
   }
 
   .recent-transactions {
@@ -146,7 +146,7 @@
   }
 
   .recent-transactions-label {
-    @apply text-20 md:text-24 font-semibold text-gray-900;
+    @apply text-[20px] md:text-[24px] font-semibold text-gray-900;
   }
 
   .recent-transactions-tablist {
@@ -175,11 +175,11 @@
   }
 
   .profile-name {
-    @apply text-24 font-semibold text-gray-900;
+    @apply text-[24px] font-semibold text-gray-900;
   }
 
   .profile-email {
-    @apply text-16 font-normal text-gray-600;
+    @apply text-[16px] font-normal text-gray-600;
   }
 
   .banks {
@@ -213,11 +213,11 @@
   }
 
   .header-box-title {
-    @apply text-24 lg:text-30 font-semibold text-gray-900;
+    @apply text-[24px] lg:text-30 font-semibold text-gray-900;
   }
 
   .header-box-subtext {
-    @apply text-14 lg:text-16 font-normal text-gray-600;
+    @apply text-[14px] lg:text-16 font-normal text-gray-600;
   }
 
   /* Bank Card */
@@ -258,7 +258,7 @@
 
   /* PlaidLink */
   .plaidlink-primary {
-    @apply text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
+    @apply text-[16px] rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
   }
 
   .plaidlink-ghost {
@@ -284,19 +284,19 @@
   }
 
   .form-label {
-    @apply text-14 w-full max-w-[280px] font-medium text-gray-700;
+    @apply text-[14px] w-full max-w-[280px] font-medium text-gray-700;
   }
 
   .form-message {
-    @apply text-12 text-red-500;
+    @apply text-[12px] text-red-500;
   }
 
   .form-btn {
-    @apply text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
+    @apply text-[16px] rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
   }
 
   .form-link {
-    @apply text-14 cursor-pointer font-medium text-bankGradient;
+    @apply text-[14px] cursor-pointer font-medium text-bankGradient;
   }
 
   /* Payment Transfer */
@@ -321,7 +321,7 @@
   }
 
   .payment-transfer_btn {
-    @apply text-14 w-full bg-bank-gradient font-semibold text-white shadow-form !important;
+    @apply text-[14px] w-full bg-bank-gradient font-semibold text-white shadow-form !important;
   }
 
   /* Root Layout */
@@ -365,7 +365,7 @@
   }
 
   .sidebar-logo {
-    @apply 2xl:text-26 font-ibm-plex-serif text-[26px] font-bold text-black-1 max-xl:hidden;
+    @apply 2xl:text-[26px] font-ibm-plex-serif text-[26px] font-bold text-black-1 max-xl:hidden;
   }
 
   .sidebar-link {
@@ -373,6 +373,6 @@
   }
 
   .sidebar-label {
-    @apply text-16 font-semibold text-black-2 max-xl:hidden;
+    @apply text-[16px] font-semibold text-black-2 max-xl:hidden;
   }
 }
