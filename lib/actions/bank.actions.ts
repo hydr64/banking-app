@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { CountryCode } from "plaid";
@@ -7,6 +8,12 @@ import { parseStringify } from "../utils";
 
 import { getTransactionsByBankId } from "./transaction.actions";
 import { getBanks, getBank } from "./user.actions";
+
+// Get item info (for institution_id)
+const getItemInfo = async (accessToken: string) => {
+  const itemResponse = await plaidClient.itemGet({ access_token: accessToken });
+  return itemResponse.data.item;
+};
 
 // Get multiple bank accounts
 export const getAccounts = async ({ userId }: getAccountsProps) => {
@@ -23,8 +30,9 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
         const accountData = accountsResponse.data.accounts[0];
 
         // get institution info from plaid
+        const item = await getItemInfo(bank.accessToken);
         const institution = await getInstitution({
-          institutionId: accountsResponse.data.item.institution_id!,
+          institutionId: item.institution_id!,
         });
 
         const account = {
@@ -38,7 +46,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
           type: accountData.type as string,
           subtype: accountData.subtype! as string,
           appwriteItemId: bank.$id,
-          sharaebleId: bank.shareableId,
+          shareableId: bank.shareableId,
         };
 
         return account;
@@ -86,8 +94,9 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     );
 
     // get institution info from plaid
+    const item = await getItemInfo(bank.accessToken);
     const institution = await getInstitution({
-      institutionId: accountsResponse.data.item.institution_id!,
+      institutionId: item.institution_id!,
     });
 
     const transactions = await getTransactions({
@@ -140,39 +149,105 @@ export const getInstitution = async ({
 };
 
 // Get transactions
-export const getTransactions = async ({
-  accessToken,
-}: getTransactionsProps) => {
+const useMockData = true;
+
+export const getTransactions = async (accessToken: string) => {
+  if (useMockData) {
+    return [
+      {
+        transaction_id: "txn_001",
+        name: "Starbucks",
+        amount: 4.5,
+        date: "2025-05-15",
+        category: ["Food", "Coffee"],
+        merchant_name: "Starbucks",
+      },
+      {
+        transaction_id: "txn_002",
+        name: "Amazon",
+        amount: 89.99,
+        date: "2025-05-14",
+        category: ["Shopping", "Online"],
+        merchant_name: "Amazon",
+      },
+      {
+        transaction_id: "txn_003",
+        name: "Uber",
+        amount: 15.75,
+        date: "2025-05-13",
+        category: ["Transport"],
+        merchant_name: "Uber",
+      },
+      {
+        transaction_id: "txn_004",
+        name: "Zara",
+        amount: 749.99,
+        date: "2025-05-13",
+        category: ["Shopping", "Clothing"],
+        merchant_name: "Zara",
+      },
+      {
+        transaction_id: "txn_005",
+        name: "Netflix",
+        amount: 15.99,
+        date: "2025-05-12",
+        category: ["Entertainment"],
+        merchant_name: "Netflix",
+      },
+      {
+        transaction_id: "txn_006",
+        name: "Spotify",
+        amount: 9.99,
+        date: "2025-05-11",
+        category: ["Entertainment"],
+        merchant_name: "Spotify",
+      },
+      {
+        transaction_id: "txn_007",
+        name: "Whole Foods",
+        amount: 45.67,
+        date: "2025-05-10",
+        category: ["Groceries"],
+        merchant_name: "Whole Foods",
+      },
+    ];
+  }
   let hasMore = true;
-  let transactions: unknown = [];
+  const transactions: any = [];
+  let cursor: string | null = null;
 
   try {
-    // Iterate through each page of new transaction updates for item
     while (hasMore) {
       const response = await plaidClient.transactionsSync({
         access_token: accessToken,
+        cursor: cursor ?? undefined,
       });
 
       const data = response.data;
 
-      transactions = response.data.added.map((transaction) => ({
-        id: transaction.transaction_id,
-        name: transaction.name,
-        paymentChannel: transaction.payment_channel,
-        type: transaction.payment_channel,
-        accountId: transaction.account_id,
-        amount: transaction.amount,
-        pending: transaction.pending,
-        category: transaction.category ? transaction.category[0] : "",
-        date: transaction.date,
-        image: transaction.logo_url,
-      }));
+      const newTransactions =
+        data.added?.map((transaction) => ({
+          id: transaction.transaction_id,
+          name: transaction.name,
+          paymentChannel: transaction.payment_channel,
+          type: transaction.payment_channel,
+          accountId: transaction.account_id,
+          amount: transaction.amount,
+          pending: transaction.pending,
+          category: transaction.category ? transaction.category[0] : "",
+          date: transaction.date,
+          image: transaction.logo_url,
+        })) || [];
 
+      transactions.push(...newTransactions);
+
+      cursor = data.next_cursor;
       hasMore = data.has_more;
     }
 
-    return parseStringify(transactions);
+    return transactions;
   } catch (error) {
-    console.error("An error occurred while getting the accounts:", error);
+    console.error("An error occurred while getting the transactions:", error);
+    return [];
   }
 };
